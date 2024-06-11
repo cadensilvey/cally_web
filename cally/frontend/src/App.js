@@ -1,9 +1,11 @@
 import React, {useState} from "react";
 import ScoreInput from "./components/ScoreInput";
 
+
 const App = () => {
 
   const [scores, setScores] = useState(Array(18).fill(0));
+  const [currentHole, setCurrentHole] = useState(1);
 
   const handleScoreChange = (hole, score) => {
     const newScores = [...scores];
@@ -12,34 +14,36 @@ const App = () => {
   };
 
   const handleSubmit = async () => {
-    try{
-
-      const respone = await fetch('http://127.0.0.1:5000/api/calculate', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({scores})
-      });
-  
-      if (!respone.ok ) {
-        throw new Error ('network response was not okay');
+      if(currentHole < 18 ){
+        setCurrentHole(currentHole + 1);
       }
-  
-      const result = await respone.json();
-      alert(`Final Score: ${result.finalScore}`);
+      else {
 
-    } catch (error){
-      console.error('failed to fetch ', error);
-    }
-    
+        
+        const respone = await fetch('http://127.0.0.1:5000/api/calculate', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({scores})
+        });
+        
+        if (!respone.ok ) {
+          throw new Error ('network response was not okay');
+        }
+        
+        const result = await respone.json();
+        alert(`Final Score: ${result.finalScore}`);
+      }    
   };
 
   return (
-    <div>
-      <h1>Score Input</h1>
-      {scores.map((_, index) => (
-        <ScoreInput key={index} hole={index +1} onScoreChange={handleScoreChange} />
-      ))}
-      <button onClick={handleSubmit}>Submit Scores</button>
+    <div class="pt-10 items-center justify-center h-screen">
+      <h1 class="text-5xl font-semibold mb-2 text-center">Cally Score Input</h1>
+      <ScoreInput
+        hole={currentHole}
+        onScoreChange={handleScoreChange}
+        onNext={handleSubmit}
+      />
+      
     </div>
   );
 };
