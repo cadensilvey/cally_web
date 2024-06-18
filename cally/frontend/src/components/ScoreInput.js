@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 
 const ScoreInput = ({ hole, onScoreChange, onNext }) => {
     const [score, setScore] = useState(0);
