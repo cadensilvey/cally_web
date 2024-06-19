@@ -33,7 +33,7 @@ const Leaderboard = () => {
               <span className="mr-8">{entry.team_name}</span>
               <span className="text-gray-600">{`Total Score: ${entry.total_score}, Callaway Score: ${entry.callaway_score}`}</span>
             </div>
-            <span className="text-gray-600">{`${entry.total_score}`}</span>
+            <span className="text-gray-600">{`${entry.callaway_score    }`}</span>
           </li>
         ))}
       </ul>
