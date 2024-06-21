@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ScoreInput from "./ScoreInput";
 import axios from "axios";
-import Leaderboard from "./Leaderboard";
+// import Leaderboard from "./Leaderboard";
 
 const ScoreCalculator = () => {
   const [scores, setScores] = useState(Array(18).fill(0));
@@ -58,19 +58,20 @@ const ScoreCalculator = () => {
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto flex items-center justify-center">
       {!nameEntered ? (
-        <div className="text-center my-4">
+        <div className="bg-white shadow-lg p-8 rounded-lg text-center">
+          <h1 className="font-medium mb-4">Please Enter Your Team Name:</h1>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name"
-            className="border-2 border-gray-300 p-2 rounded mb-4"
+            placeholder="Team Name: "
+            className="border-2 border-gray-300 p-2 rounded mb-4 w-full"
           />
           <button
             onClick={handleNameSubmit}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
           >
             Submit Name
           </button>
@@ -88,21 +89,19 @@ const ScoreCalculator = () => {
             <div className="text-center my-4">
               <button
                 onClick={handleStartNewRound}
-                className="mt-4 bg-green-700 hover:bg-green-900 text-white font-semibold px-4 py-2 rounded"
+                className="bg-green-700 hover:bg-green-900 text-white font-semibold px-4 py-2 rounded mt-4"
               >
-                Start New Round
+                Enter New Round
               </button>
-            </div>
-          )}
-
-          {isSubmitted && (
-            <div className="text-center my-4">
-              <Leaderboard />
+              <h1 className="p-10">
+                Thanks for entering your round. Check out the leaderboard to see where you stand.
+              </h1>
             </div>
           )}
         </>
       )}
     </div>
+
   );
 };
 

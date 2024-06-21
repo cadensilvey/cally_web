@@ -2,12 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2');
 const Scorecard = require('./callaway');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(express.json());
+
+const SECRET_KEY = 'root'; 
 
 // this is my database connection 
 const db = mysql.createConnection({
@@ -58,8 +62,86 @@ app.get('/leaderboard', (req, res) => {
       return res.status(500).json({error: err.message});
     }
     res.status(200).json(results);
-  })
-})
+  });
+});
+
+// Admin login route
+app.post('/admin/login', (req, res) => {
+  const { username, password } = req.body;
+  console.log('Login attempt:', { username, password });
+
+  const query = 'SELECT * FROM admins WHERE username = ?';
+  db.execute(query, [username], async (err, results) => {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ error: err.message });
+    }
+    if (results.length === 0) {
+      console.error('No user found');
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    const admin = results[0];
+    console.log('User found:', admin);
+
+    const validPassword = await bcrypt.compare(password, admin.password);
+    console.log('Password comparison result:', validPassword);
+
+    if (!validPassword) {
+      console.error('Invalid password');
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    const token = jwt.sign({ id: admin.id, username: admin.username }, SECRET_KEY, { expiresIn: '1h' });
+    res.json({ token });
+  });
+});
+
+// Middleware to verify JWT
+// Middleware to verify JWT
+const verifyToken = (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token) return res.status(403).send('A token is required for authentication');
+
+  try {
+      const decoded = jwt.verify(token, SECRET_KEY);
+      req.admin = decoded;
+      next(); // Proceed to the next middleware or route handler
+  } catch (err) {
+      return res.status(401).send('Invalid Token');
+  }
+};
+
+
+// DELETE route to delete a leaderboard entry by team_name
+app.delete('/leaderboard/:team_name', verifyToken, (req, res) => {
+  const teamName = req.params.team_name;
+  console.log('Deleting team:', teamName); // Log the team name being deleted
+  const query = 'DELETE FROM leaderboard WHERE team_name = ?';
+
+  db.execute(query, [teamName], (err, results) => {
+      if (err) {
+          console.error('Error deleting from leaderboard:', err);
+          return res.status(500).json({ error: err.message }); // Send error response here
+      }
+      console.log('Delete operation successful');
+      res.status(204).send(); // Successful deletion response
+  });
+});
+
+
+
+
+
+app.put('/leaderboard/:id', verifyToken, (req, res) => {
+  const id = req.params.id;
+  const { team_name, total_score, callaway_score } = req.body;
+  const query = 'UPDATE leaderboard SET team_name = ?, total_score = ?, callaway_score = ? WHERE id = ?';
+  db.execute(query, [team_name, total_score, callaway_score, id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(200).send();
+  });
+});
 
 
 

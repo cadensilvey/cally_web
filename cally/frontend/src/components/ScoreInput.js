@@ -18,29 +18,31 @@ const ScoreInput = ({ hole, onScoreChange, onNext }) => {
     };
 
     return (
-        <div className="pt-10 text-center my-4">
-            <h2 className="text-xl font-semibold mb-2">Enter Score For Hole {hole}</h2>
-            <div className="flex items-center justify-center">
+        <div className="bg-white shadow-xl p-5 rounded-2xl">
+            <div className="pt-10 text-center">
+                <h2 className="text-xl font-semibold mb-8">Enter Score For Hole {hole}</h2>
+                <div className="flex items-center justify-center">
+                    <button 
+                        onClick={handleDecrement}
+                        className="bg-gray-300 hover:bg-gray-500 text-gray-700 px-4 py-2 rounded"
+                    >
+                        -
+                    </button>
+                    <span className="px-4">{score}</span>
+                    <button 
+                        onClick={handleIncrement}
+                        className="bg-gray-300 hover:bg-gray-500 text-gray-700 px-4 py-2 rounded"
+                    >
+                        +
+                    </button>
+                </div>
                 <button 
-                    onClick={handleDecrement}
-                    className="bg-gray-300 hover:bg-gray-500 text-gray-700 px-4 py-2 rounded"
+                    onClick={handleSubmit}
+                    className="mt-4 bg-green-700 hover:bg-green-900 text-white font-semibold px-4 py-2 rounded"
                 >
-                    -
-                </button>
-                <span className="px-4">{score}</span>
-                <button 
-                    onClick={handleIncrement}
-                    className="bg-gray-300 hover:bg-gray-500 text-gray-700 px-4 py-2 rounded"
-                >
-                    +
-                </button>
+                    Submit
+                </button>            
             </div>
-            <button 
-                onClick={handleSubmit}
-                className="mt-4 bg-green-700 hover:bg-green-900 text-white font-semibold px-4 py-2 rounded"
-            >
-                Submit
-            </button>            
         </div>
     );
 };
