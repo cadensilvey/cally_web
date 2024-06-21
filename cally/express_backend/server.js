@@ -22,6 +22,23 @@ const db = mysql.createConnection({
   port: '8889'
 });
 
+// Endpoint to fetch round details by round ID
+app.get('/round/:id', (req, res) => {
+  const id = req.params.id;
+  console.log("clicked on round id of:", id);
+  const sql = 'SELECT * FROM leaderboard WHERE id = ?';
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      console.error('Error fetching round details:', err);
+      return res.status(500).json({ error: 'Server error' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'Round not found' });
+    }
+    res.json(results[0]); // Assuming there's only one row for the round ID
+  });
+});
+
 // calcuate the callaway score and return the result
 app.post('/calculate', (req, res) => {
   const { scores, name } = req.body;
@@ -41,8 +58,8 @@ app.post('/calculate', (req, res) => {
   };
 
   // add the score to the leaderboard
-  const query = 'INSERT INTO leaderboard (team_name, total_score, callaway_score) VALUES (?, ?, ?)';
-  db.execute(query, [result.name, result.totalScore, result.callawayScore], (err, results) => {
+  const query = 'INSERT INTO leaderboard (team_name, total_score, callaway_score, holes, adjustment, deduction) VALUES (?, ?, ?, ?, ?, ?)';
+  db.execute(query, [result.name, result.totalScore, result.callawayScore, result.holes, result.adjustment, result.deduction], (err, results) => {
     if(err) {
       console.log("error with adding the results to the database dummy");
       return res.status(500).json({error: err.message});
@@ -55,7 +72,7 @@ app.post('/calculate', (req, res) => {
 
 // get the leaderboard
 app.get('/leaderboard', (req, res) => {
-  const query = 'SELECT team_name, total_score, callaway_score FROM leaderboard ORDER BY callaway_score ASC';
+  const query = 'SELECT id, team_name, total_score, callaway_score, holes, adjustment, deduction  FROM leaderboard ORDER BY callaway_score ASC';
   db.execute(query, (err, results) => {
     if(err) {
       console.log("there was an error trying to show the leaderboard");
@@ -154,11 +171,6 @@ app.delete('/delete-all', verifyToken, (req, res) => {
       res.status(204).send(); // Successful deletion response
   });
 });
-
-// server.js
-
-
-
 
 // Update entries in the leaderboard (admin only) using the team name 
 app.put('/leaderboard/:team_name', verifyToken, (req, res) => {
