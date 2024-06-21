@@ -68,6 +68,7 @@ const Leaderboard = () => {
               <button onClick={closeModal} className="text-gray-600">&times;</button>
             </div>
             <p>Team Name: {selectedRound.team_name}</p>
+            <p>Scorecard: {selectedRound.scorecard}</p>
             <p>Total Score: {selectedRound.total_score}</p>
             <p>Callaway Score: {selectedRound.callaway_score}</p>
             <p>Holes: {selectedRound.holes}</p>
