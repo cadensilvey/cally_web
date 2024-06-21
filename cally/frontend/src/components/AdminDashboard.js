@@ -32,7 +32,17 @@ const AdminDashboard = ({ token }) => {
         }
     };
     
-    
+    const handleDeleteAll = async () => {
+        try {
+            await axios.delete('http://localhost:3000/delete-all', {
+                headers: { Authorization: token }
+            });
+            fetchLeaderboard(); // Optionally refresh the leaderboard after deletion
+        } catch (error) {
+            console.error('Error deleting all entries from leaderboard', error);
+            setError('Error deleting all entries from leaderboard');
+        }
+    };
     
 
     // const handleEdit = (id) => {
@@ -62,6 +72,9 @@ const AdminDashboard = ({ token }) => {
                     </li>
                 ))}
             </ul>
+            <button onClick={handleDeleteAll} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                Delete All Entries
+            </button>
         </div>
     );
 };

@@ -98,7 +98,6 @@ app.post('/admin/login', (req, res) => {
 });
 
 // Middleware to verify JWT
-// Middleware to verify JWT
 const verifyToken = (req, res, next) => {
   const token = req.headers['authorization'];
   if (!token) return res.status(403).send('A token is required for authentication');
@@ -111,7 +110,6 @@ const verifyToken = (req, res, next) => {
       return res.status(401).send('Invalid Token');
   }
 };
-
 
 // DELETE route to delete a leaderboard entry by team_name
 app.delete('/leaderboard/:team_name', verifyToken, (req, res) => {
@@ -129,9 +127,18 @@ app.delete('/leaderboard/:team_name', verifyToken, (req, res) => {
   });
 });
 
-
-
-
+// Delete all entries from leaderboard (admin only)
+app.delete('/delete-all', verifyToken, (req, res) => {
+  const query = 'DELETE FROM leaderboard';
+  db.execute(query, (err, results) => {
+      if (err) {
+          console.error('Error deleting all entries from leaderboard:', err);
+          return res.status(500).json({ error: err.message });
+      }
+      console.log('Deleted all entries from leaderboard');
+      res.status(204).send(); // Successful deletion response
+  });
+});
 
 app.put('/leaderboard/:id', verifyToken, (req, res) => {
   const id = req.params.id;
@@ -142,8 +149,6 @@ app.put('/leaderboard/:id', verifyToken, (req, res) => {
     res.status(200).send();
   });
 });
-
-
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

@@ -54,7 +54,7 @@ const AdminLogin = ({ setIsAdmin, setToken }) => {
                     <div className="flex items-center justify-between">
                         <button
                             onClick={handleLogin}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            className="bg-green-800 hover:bg-green-900 text-white py-4 px-7 rounded focus:outline-none focus:shadow-outline"
                             type="button"
                         >
                             Login
