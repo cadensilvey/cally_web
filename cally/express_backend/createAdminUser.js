@@ -10,9 +10,9 @@ const db = mysql.createConnection({
   port: '8889'
 });
 
-const password = 'root'; // Replace with your admin password
+const password = 'basement'; // Replace with your admin password
 const saltRounds = 10;
-const username = 'root'; // Replace with your desired admin username
+const username = 'dweller'; // Replace with your desired admin username
 
 bcrypt.hash(password, saltRounds, (err, hash) => {
   if (err) {

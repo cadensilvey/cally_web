@@ -7,6 +7,7 @@ import ScoreCalculator from './components/ScoreCalculator';
 import Home from './components/Home';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
+import AdminEdit from './components/AdminEdit';
 
 const App = () => {
 
@@ -25,6 +26,7 @@ const App = () => {
                       <Route path="/" element={<Home />} />
                       <Route path="/admin-login" element={<AdminLogin setIsAdmin={setIsAdmin} setToken={setToken} />} />
                       {isAdmin && <Route path="/admin" element={<AdminDashboard token={token} />} />}
+                      {isAdmin && <Route path="/admin/edit/:team_name" element={<AdminEdit token={token} />} />}
                   </Routes>
               </div>
           </Router>

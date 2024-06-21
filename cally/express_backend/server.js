@@ -127,6 +127,21 @@ app.delete('/leaderboard/:team_name', verifyToken, (req, res) => {
   });
 });
 
+// Get a specific leaderboard entry by team_name
+app.get('/leaderboard/:team_name', (req, res) => {
+  const teamName = req.params.team_name;
+  console.log('Trying to GET Team:', teamName);
+  const query = 'SELECT * FROM leaderboard WHERE team_name = ?';
+
+  db.execute(query, [teamName], (err, results) => {
+    if (err) {
+      console.error('error selecting from the leaderboard:', err);
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(200).json(results[0]);
+  });
+});
+
 // Delete all entries from leaderboard (admin only)
 app.delete('/delete-all', verifyToken, (req, res) => {
   const query = 'DELETE FROM leaderboard';
@@ -140,13 +155,19 @@ app.delete('/delete-all', verifyToken, (req, res) => {
   });
 });
 
-app.put('/leaderboard/:id', verifyToken, (req, res) => {
-  const id = req.params.id;
+// server.js
+
+
+
+
+// Update entries in the leaderboard (admin only) using the team name 
+app.put('/leaderboard/:team_name', verifyToken, (req, res) => {
+  const team_name_param = req.params.team_name;
   const { team_name, total_score, callaway_score } = req.body;
-  const query = 'UPDATE leaderboard SET team_name = ?, total_score = ?, callaway_score = ? WHERE id = ?';
-  db.execute(query, [team_name, total_score, callaway_score, id], (err, results) => {
+  const query = 'UPDATE leaderboard SET team_name = ?, total_score = ?, callaway_score = ? WHERE team_name = ?';
+  db.execute(query, [team_name, total_score, callaway_score, team_name_param], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.status(200).send();
+    res.status(200).send(results);
   });
 });
 
