@@ -21,29 +21,48 @@ const AdminLogin = ({ setIsAdmin, setToken }) => {
     };
 
     return (
-        <div className="text-center my-4">
-            <h2 className="text-2xl font-semibold mb-4">Admin Login</h2>
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="border-2 border-gray-300 p-2 rounded mb-4"
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="border-2 border-gray-300 p-2 rounded mb-4"
-            />
-            <button
-                onClick={handleLogin}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-                Login
-            </button>
-            {error && <div className="text-red-500 mt-2">{error}</div>}
+        <div className="flex items-center justify-center h-screen">
+            <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-xs">
+                <h2 className="text-2xl font-semibold mb-4 text-center">Admin Login</h2>
+                <form className="mb-4">
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+                            Username
+                        </label>
+                        <input
+                            id="username"
+                            type="text"
+                            placeholder="Enter your username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                    </div>
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                            Password
+                        </label>
+                        <input
+                            id="password"
+                            type="password"
+                            placeholder="Enter your password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <button
+                            onClick={handleLogin}
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            type="button"
+                        >
+                            Login
+                        </button>
+                    </div>
+                </form>
+                {error && <div className="text-red-500 mt-2 text-center">{error}</div>}
+            </div>
         </div>
     );
 };
