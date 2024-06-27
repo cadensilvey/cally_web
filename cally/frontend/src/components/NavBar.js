@@ -14,6 +14,8 @@ const NavBar = () => {
                     <Link to="/score-calculator" className="text-gray-700 text-lg hover:text-green-700">Enter Scores</Link>
                     <Link to="/leaderboard" className="text-gray-700 text-lg hover:text-green-700">Leaderboard</Link>
                     <Link to="/admin-login" className="text-gray-700 text-lg hover:text-green-700">Admin Login</Link>
+                    <Link to="/scorecard" className="text-gray-700 text-lg hover:text-green-700">Scorecard</Link>
+
 
                 </div>
             </div>

@@ -8,6 +8,7 @@ import Home from './components/Home';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 import AdminEdit from './components/AdminEdit';
+import ScorecardLeaderboard from './components/ScorecardLeaderboard';
 
 const App = () => {
 
@@ -22,6 +23,8 @@ const App = () => {
               <div className="container mx-auto mt-4 flex-grow">
                   <Routes>
                       <Route path="/leaderboard" element={<Leaderboard />} />
+                      <Route path="/scorecard" element={<ScorecardLeaderboard />} />
+
                       <Route path="/score-calculator" element={<ScoreCalculator />} />
                       <Route path="/" element={<Home />} />
                       <Route path="/admin-login" element={<AdminLogin setIsAdmin={setIsAdmin} setToken={setToken} />} />
